@@ -10,15 +10,33 @@ const ReviewForm = ({ onSubmit }) => {
   const [cons, setCons] = useState("");
   const [rating, setRating] = useState(0);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Pass the input data to the parent component
-    onSubmit({ companyName, pros, cons, rating });
-    // Reset form fields
-    setCompanyName("");
-    setPros("");
-    setCons("");
-    setRating(0);
+
+    try {
+      const response = await fetch("http://localhost:3001/api/saveReview", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ companyName, pros, cons, rating }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        console.log("Review saved successfully");
+        onSubmit({ companyName, pros, cons, rating });
+        setCompanyName("");
+        setPros("");
+        setCons("");
+        setRating(0);
+      } else {
+        console.error("Error saving review:", result.message);
+      }
+    } catch (error) {
+      console.error("Error saving review:", error);
+    }
   };
 
   return (

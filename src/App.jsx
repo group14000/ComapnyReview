@@ -5,14 +5,21 @@ import SeeReviews from "./components/SeeReviews";
 
 const App = () => {
   return (
-<BrowserRouter>
-  <Navbar />
-  <Routes>
-    <Route path="/" element={<Navigate to="/add-review" />} />
-    <Route path="/add-review" element={<ReviewForm />} />
-    <Route path="/see-review" element={<SeeReviews />} />
-  </Routes>
-</BrowserRouter>
+    <BrowserRouter>
+      <div className="flex flex-col min-h-screen">
+        {/* Navbar */}
+        <Navbar />
+
+        {/* Content */}
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<Navigate to="/add-review" />} />
+            <Route path="/add-review" element={<ReviewForm />} />
+            <Route path="/see-review" element={<SeeReviews />} />
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 };
 

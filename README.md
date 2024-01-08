@@ -9,6 +9,8 @@ Currently, two official plugins are available:
 
 packages need to be installed :
 
+Frontend ->
+
 npm create vite@latest
 
 npm install -D tailwindcss postcss autoprefixer
@@ -22,3 +24,16 @@ npm install @mui/material @mui/styled-engine-sc styled-components
 npm install @mui/icons-material
 
 npm install react-router-dom
+
+npm install react-query
+
+
+Backend ->
+
+npm init -y
+
+npm install express mysql2
+
+npm install cors
+
+
