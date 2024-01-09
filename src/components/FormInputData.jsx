@@ -53,9 +53,11 @@ const FormInputData = ({ onSubmit }) => {
 
   // JSX structure for rendering the review form
   return (
-    <form onSubmit={handleSubmit} className="max-w-lg mx-auto mt-8">
-      <div className="mb-4">
-        {/* Text field for entering the company name */}
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-lg mx-auto mt-8 bg-white p-6 shadow-md rounded-lg"
+    >
+      <div className="mb-6">
         <TextField
           label="Company Name"
           variant="outlined"
@@ -64,10 +66,10 @@ const FormInputData = ({ onSubmit }) => {
           margin="normal"
           value={companyName}
           onChange={(e) => setCompanyName(e.target.value)}
+          className="bg-gray-100 rounded-md p-3"
         />
       </div>
-      <div className="mb-4">
-        {/* Text field for entering the pros of the review */}
+      <div className="mb-6">
         <TextField
           label="Pros"
           variant="outlined"
@@ -77,10 +79,10 @@ const FormInputData = ({ onSubmit }) => {
           margin="normal"
           value={pros}
           onChange={(e) => setPros(e.target.value)}
+          className="bg-gray-100 rounded-md p-3"
         />
       </div>
-      <div className="mb-4">
-        {/* Text field for entering the cons of the review */}
+      <div className="mb-6">
         <TextField
           label="Cons"
           variant="outlined"
@@ -90,10 +92,10 @@ const FormInputData = ({ onSubmit }) => {
           margin="normal"
           value={cons}
           onChange={(e) => setCons(e.target.value)}
+          className="bg-gray-100 rounded-md p-3"
         />
       </div>
-      <div className="mb-4">
-        {/* Rating input field */}
+      <div className="mb-6">
         <label className="block mb-2 text-gray-700">Rating:</label>
         <Rating
           name="rating"
@@ -105,7 +107,6 @@ const FormInputData = ({ onSubmit }) => {
         />
       </div>
       <div>
-        {/* Submit button */}
         <Button
           type="submit"
           variant="contained"

@@ -41,7 +41,7 @@ const CompanyReviewList = () => {
   );
 
   return (
-    <div className="max-w-lg mx-auto mt-8 p-4 bg-white shadow-md rounded-lg">
+    <div className="max-w-lg mx-auto mt-8 p-6 bg-gradient-to-r from-blue-500 via-blue-700 to-indigo-800 text-white shadow-lg rounded-lg">
       <TextField
         label="Search Company"
         variant="outlined"
@@ -50,22 +50,22 @@ const CompanyReviewList = () => {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon className="text-gray-500" />
+              <SearchIcon className="text-gray-300" />
             </InputAdornment>
           ),
         }}
         onChange={handleSearch}
-        className="mb-4"
+        className="mb-6 bg-white text-gray-800 rounded-md px-4 py-2"
       />
       <ul className="list-none p-0">
         {filteredReviews.map((review, index) => (
-          <li key={index} className="mb-6 border-b border-gray-200 pb-4">
-            <p className="text-xl font-semibold mb-2">
+          <li key={index} className="mb-6 border-b border-gray-300 pb-4">
+            <p className="text-2xl font-bold mb-2 text-white">
               Company Name: {review.companyName}
             </p>
-            <p className="text-gray-700 mb-2">Pros: {review.pros}</p>
-            <p className="text-gray-700 mb-2">Cons: {review.cons}</p>
-            <p className="text-gray-700">Rating: {review.rating}</p>
+            <p className="text-gray-200 mb-2">Pros: {review.pros}</p>
+            <p className="text-gray-200 mb-2">Cons: {review.cons}</p>
+            <p className="text-gray-200">Rating: {review.rating}</p>
           </li>
         ))}
       </ul>
