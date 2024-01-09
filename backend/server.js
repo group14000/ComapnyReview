@@ -1,43 +1,51 @@
-// Importing required modules
 const express = require("express");
-const database = require("./database"); // Import the database module
-
-// Creating an instance of the Express application
-const app = express();
-const port = 3001;
-
-// Adding Cross-Origin Resource Sharing (CORS) middleware to the application
+const bodyParser = require("body-parser");
 const cors = require("cors");
+const mysql = require("mysql2/promise"); // Change the import to use the promise version of mysql2
+
+const app = express();
+const PORT = 3001;
+
+const pool = mysql.createPool({
+  host: "localhost",
+  user: "root",
+  password: "Diganta@7908",
+  database: "comapny_reviews", // Fix typo in the database name (comapny_reviews to company_reviews)
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
+});
+
 app.use(cors());
+app.use(bodyParser.json());
 
-// Parsing incoming JSON requests
-app.use(express.json());
-
-// Handling HTTP POST request to save a review
 app.post("/api/saveReview", async (req, res) => {
+  const { companyName, pros, cons, rating } = req.body;
+
   try {
-    // Creating a connection to the MySQL database
-    const connection = await database.createConnection();
+    const [existingReview] = await pool
+      .promise()
+      .query("SELECT * FROM reviews WHERE companyName = ?", [companyName]);
 
-    // Extracting review details from the request body
-    const { companyName, pros, cons, rating } = req.body;
+    if (existingReview.length > 0) {
+      await pool
+        .promise()
+        .query(
+          "UPDATE reviews SET pros=?, cons=?, rating=? WHERE companyName=?",
+          [pros, cons, rating, companyName]
+        );
+    } else {
+      await pool
+        .promise()
+        .query(
+          "INSERT INTO reviews (companyName, pros, cons, rating) VALUES (?, ?, ?, ?)",
+          [companyName, pros, cons, rating]
+        );
+    }
 
-    // Inserting the data into the MySQL database
-    await connection.execute(
-      "INSERT INTO reviews (companyName, pros, cons, rating) VALUES (?, ?, ?, ?)",
-      [companyName, pros, cons, rating]
-    );
-
-    // Closing the database connection
-    await database.closeConnection(connection);
-
-    // Sending a success response with a JSON message
-    res
-      .status(200)
-      .json({ success: true, message: "Review saved successfully" });
+    res.json({ success: true });
   } catch (error) {
-    // Handling errors by logging and sending an error response
-    console.error("Error saving review:", error);
+    console.error("Error saving or updating review:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
@@ -45,14 +53,8 @@ app.post("/api/saveReview", async (req, res) => {
 // Handling HTTP GET request to fetch all reviews
 app.get("/api/getReviews", async (req, res) => {
   try {
-    // Creating a connection to the MySQL database
-    const connection = await database.createConnection();
-
-    // Fetching all reviews from the MySQL database
-    const [rows] = await connection.execute("SELECT * FROM reviews");
-
-    // Closing the database connection
-    await database.closeConnection(connection);
+    // Fetching all reviews from the MySQL database using the pool
+    const [rows] = await pool.promise().query("SELECT * FROM reviews");
 
     // Sending a success response with the fetched reviews
     res.status(200).json(rows);
@@ -63,7 +65,6 @@ app.get("/api/getReviews", async (req, res) => {
   }
 });
 
-// Starting the Express server on the specified port
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
