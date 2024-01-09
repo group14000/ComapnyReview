@@ -49,15 +49,23 @@ app.post("/api/saveReview", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
+
 app.get("/api/getReviews", async (req, res) => {
   try {
     const [reviews] = await pool.promise().query("SELECT * FROM reviews");
-    res.json(reviews);
+
+    // Check if reviews exist
+    if (reviews.length > 0) {
+      res.status(200).json({ success: true, data: reviews });
+    } else {
+      res.status(404).json({ success: false, message: "No reviews found" });
+    }
   } catch (error) {
     console.error("Error fetching reviews:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
