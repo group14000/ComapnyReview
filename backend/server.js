@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const mysql = require("mysql2/promise"); // Change the import to use the promise version of mysql2
+const mysql = require("mysql2");
 
 const app = express();
 const PORT = 3001;
@@ -10,7 +10,7 @@ const pool = mysql.createPool({
   host: "localhost",
   user: "root",
   password: "Diganta@7908",
-  database: "comapny_reviews", // Fix typo in the database name (comapny_reviews to company_reviews)
+  database: "comapny_reviews",
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
@@ -49,22 +49,15 @@ app.post("/api/saveReview", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
-
-// Handling HTTP GET request to fetch all reviews
 app.get("/api/getReviews", async (req, res) => {
   try {
-    // Fetching all reviews from the MySQL database using the pool
-    const [rows] = await pool.promise().query("SELECT * FROM reviews");
-
-    // Sending a success response with the fetched reviews
-    res.status(200).json(rows);
+    const [reviews] = await pool.promise().query("SELECT * FROM reviews");
+    res.json(reviews);
   } catch (error) {
-    // Handling errors by logging and sending an error response
     console.error("Error fetching reviews:", error);
-    res.status(500).json([]);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
