@@ -5,7 +5,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import TextField from "@mui/material/TextField";
 
 // Functional React component for displaying and searching reviews
-const SeeReviews = () => {
+const CompanyReviewList = () => {
   // State variables to manage search term and reviews data
   const [searchTerm, setSearchTerm] = useState("");
   const [reviews, setReviews] = useState([]);
@@ -83,4 +83,4 @@ const SeeReviews = () => {
 };
 
 // Exporting the component for use in other parts of the application
-export default SeeReviews;
+export default CompanyReviewList;

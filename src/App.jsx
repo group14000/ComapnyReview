@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import ReviewForm from "./components/ReviewForm";
-import SeeReviews from "./components/SeeReviews";
+import FormInputData from "./components/FormInputData";
+import CompanyReviewList from "./components/CompanyReviewList";
 
 const App = () => {
   return (
@@ -14,8 +14,8 @@ const App = () => {
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<Navigate to="/add-review" />} />
-            <Route path="/add-review" element={<ReviewForm />} />
-            <Route path="/see-review" element={<SeeReviews />} />
+            <Route path="/add-review" element={<FormInputData />} />
+            <Route path="/see-review" element={<CompanyReviewList />} />
           </Routes>
         </div>
       </div>

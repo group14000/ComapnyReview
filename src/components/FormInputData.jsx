@@ -5,7 +5,7 @@ import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 
 // Functional React component for rendering a review form
-const ReviewForm = ({ onSubmit }) => {
+const FormInputData = ({ onSubmit }) => {
   // State variables to manage form input values
   const [companyName, setCompanyName] = useState("");
   const [pros, setPros] = useState("");
@@ -120,4 +120,4 @@ const ReviewForm = ({ onSubmit }) => {
 };
 
 // Exporting the component for use in other parts of the application
-export default ReviewForm;
+export default FormInputData;

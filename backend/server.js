@@ -1,6 +1,6 @@
 // Importing required modules
 const express = require("express");
-const mysql = require("mysql2/promise");
+const database = require("./database"); // Import the database module
 
 // Creating an instance of the Express application
 const app = express();
@@ -10,14 +10,6 @@ const port = 3001;
 const cors = require("cors");
 app.use(cors());
 
-// MySQL database credentials
-const dbConfig = {
-  host: "localhost",
-  user: "root",
-  password: "Diganta@7908",
-  database: "Company_Reviews",
-};
-
 // Parsing incoming JSON requests
 app.use(express.json());
 
@@ -25,7 +17,7 @@ app.use(express.json());
 app.post("/api/saveReview", async (req, res) => {
   try {
     // Creating a connection to the MySQL database
-    const connection = await mysql.createConnection(dbConfig);
+    const connection = await database.createConnection();
 
     // Extracting review details from the request body
     const { companyName, pros, cons, rating } = req.body;
@@ -37,7 +29,7 @@ app.post("/api/saveReview", async (req, res) => {
     );
 
     // Closing the database connection
-    await connection.end();
+    await database.closeConnection(connection);
 
     // Sending a success response with a JSON message
     res
@@ -54,13 +46,13 @@ app.post("/api/saveReview", async (req, res) => {
 app.get("/api/getReviews", async (req, res) => {
   try {
     // Creating a connection to the MySQL database
-    const connection = await mysql.createConnection(dbConfig);
+    const connection = await database.createConnection();
 
     // Fetching all reviews from the MySQL database
     const [rows] = await connection.execute("SELECT * FROM reviews");
 
     // Closing the database connection
-    await connection.end();
+    await database.closeConnection(connection);
 
     // Sending a success response with the fetched reviews
     res.status(200).json(rows);
